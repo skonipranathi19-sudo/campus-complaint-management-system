@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Complaint #{{ complaint.id }}{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <span class="tag">Complaint #{{ complaint.id }}</span>
+        <h1>{{ complaint.category }}</h1>
+        <p class="muted">Submitted by {{ complaint.student_name }} ({{ complaint.email }})</p>
+    </div>
+    <a class="btn secondary" href="{{ url_for('dashboard') }}">Back</a>
+</div>
+
+<div class="details-grid">
+    <div class="card">
+        <h3>Complaint Information</h3>
+        <div class="detail-row"><strong>Category</strong><span>{{ complaint.category }}</span></div>
+        <div class="detail-row"><strong>Priority</strong><span class="badge priority-{{ complaint.priority|lower }}">{{ complaint.priority }}</span></div>
+        <div class="detail-row"><strong>Status</strong><span class="badge status-{{ complaint.status|lower|replace(' ', '-') }}">{{ complaint.status }}</span></div>
+        <div class="detail-row"><strong>Submitted</strong><span>{{ complaint.created_at.strftime('%d-%m-%Y %I:%M %p') }}</span></div>
+        <div class="description-box">
+            <strong>Description</strong>
+            <p>{{ complaint.description }}</p>
+        </div>
+    </div>
+
+    {% if not student_view %}
+    <div class="card">
+        <h3>Update Complaint</h3>
+        <form method="POST" action="{{ url_for('update_complaint', complaint_id=complaint.id) }}">
+            <label>Priority</label>
+            <select name="priority" required>
+                {% for value in ['Low', 'Medium', 'High'] %}
+                <option value="{{ value }}" {% if complaint.priority == value %}selected{% endif %}>{{ value }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Status</label>
+            <select name="status" required>
+                {% for value in ['Pending', 'In Progress', 'Resolved'] %}
+                <option value="{{ value }}" {% if complaint.status == value %}selected{% endif %}>{{ value }}</option>
+                {% endfor %}
+            </select>
+
+            <button class="btn primary full" type="submit" onclick="return confirmUpdate()">Save Changes</button>
+        </form>
+    </div>
+    {% endif %}
+</div>
+
+<div class="card history">
+    <h3>Complaint History</h3>
+    {% if history %}
+    <div class="timeline">
+        {% for item in history %}
+        <div class="timeline-item">
+            <strong>{{ item.action }}</strong>
+            <p>
+                {% if item.old_value %}{{ item.old_value }} → {% endif %}{{ item.new_value }}
+            </p>
+            <small>By {{ item.changed_by_name }} on {{ item.changed_at.strftime('%d-%m-%Y %I:%M %p') }}</small>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="muted">No history available.</p>
+    {% endif %}
+</div>
+{% endblock %}

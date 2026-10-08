@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Home - Campus Complaint & Maintenance Management System {% endblock %}
+{% block content %}
+<section class="hero">
+    <div>
+        <span class="tag">Campus Maintenance</span>
+        <h1>Report. Track. Resolve.</h1>
+        <p>Report campus problems such as water leakage, damaged lights, broken desks, Wi-Fi issues and washroom problems in one place.</p>
+        <div class="actions">
+            <a class="btn primary" href="{{ url_for('login') }}">Login</a>
+            <a class="btn secondary" href="{{ url_for('register') }}">Create Student Account</a>
+        </div>
+    </div>
+</section>
+
+<section class="features">
+    <div class="card">
+        <h3>Easy Reporting</h3>
+        <p>Submit a complaint with a category and clear description.</p>
+    </div>
+    <div class="card">
+        <h3>Track Status</h3>
+        <p>Students can check whether a complaint is pending, in progress or resolved.</p>
+    </div>
+    <div class="card">
+        <h3>Admin Management</h3>
+        <p>Administrators can prioritize complaints and manage their status.</p>
+    </div>
+</section>
+{% endblock %}

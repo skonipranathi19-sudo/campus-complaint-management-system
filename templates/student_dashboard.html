@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Student Dashboard{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <span class="tag">Student</span>
+        <h1>My Complaints</h1>
+        <p class="muted">Submit and track your campus maintenance complaints.</p>
+    </div>
+    <a class="btn primary" href="{{ url_for('new_complaint') }}">+ New Complaint</a>
+</div>
+
+{% if complaints %}
+<div class="table-wrapper">
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Submitted</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for complaint in complaints %}
+        <tr>
+            <td>#{{ complaint.id }}</td>
+            <td>{{ complaint.category }}</td>
+            <td>{{ complaint.description[:60] }}{% if complaint.description|length > 60 %}...{% endif %}</td>
+            <td><span class="badge priority-{{ complaint.priority|lower }}">{{ complaint.priority }}</span></td>
+            <td><span class="badge status-{{ complaint.status|lower|replace(' ', '-') }}">{{ complaint.status }}</span></td>
+            <td>{{ complaint.created_at.strftime('%d-%m-%Y %I:%M %p') }}</td>
+            <td><a class="link-btn" href="{{ url_for('student_complaint_details', complaint_id=complaint.id) }}">View</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+{% else %}
+<div class="empty card">
+    <h3>No complaints yet</h3>
+    <p>You have not submitted any complaint.</p>
+    <a class="btn primary" href="{{ url_for('new_complaint') }}">Submit Complaint</a>
+</div>
+{% endif %}
+{% endblock %}

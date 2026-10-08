@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Login - Campus Complaint & Maintenance Management System{% endblock %}
+{% block content %}
+<div class="form-card small">
+    <h2>Login</h2>
+    <p class="muted">Students and administrators can log in here.</p>
+    <form method="POST">
+        <label>Email</label>
+        <input type="email" name="email" placeholder="Enter your email" required>
+
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Enter your password" required>
+
+        <button class="btn primary full" type="submit">Login</button>
+    </form>
+    <p class="center">New student? <a href="{{ url_for('register') }}">Create an account</a></p>
+</div>
+{% endblock %}

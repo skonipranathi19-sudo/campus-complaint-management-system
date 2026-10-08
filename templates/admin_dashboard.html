@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<div class="page-header">
+    <div>
+        <span class="tag">Administrator</span>
+        <h1>Complaint Management</h1>
+        <p class="muted">View, prioritize and update campus complaints.</p>
+    </div>
+</div>
+
+<div class="stats">
+    <div class="stat-card"><span>Total</span><strong>{{ stats.total }}</strong></div>
+    <div class="stat-card"><span>Pending</span><strong>{{ stats.pending }}</strong></div>
+    <div class="stat-card"><span>In Progress</span><strong>{{ stats.in_progress }}</strong></div>
+    <div class="stat-card"><span>Resolved</span><strong>{{ stats.resolved }}</strong></div>
+</div>
+
+<div class="filter-card">
+    <form method="GET" class="filter-form">
+        <div>
+            <label>Status</label>
+            <select name="status">
+                <option value="">All Statuses</option>
+                {% for value in ['Pending', 'In Progress', 'Resolved'] %}
+                <option value="{{ value }}" {% if selected_status == value %}selected{% endif %}>{{ value }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label>Category</label>
+            <select name="category">
+                <option value="">All Categories</option>
+                {% for value in categories %}
+                <option value="{{ value }}" {% if selected_category == value %}selected{% endif %}>{{ value }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button class="btn primary" type="submit">Filter</button>
+        <a class="btn secondary" href="{{ url_for('admin_dashboard') }}">Clear</a>
+    </form>
+</div>
+
+{% if complaints %}
+<div class="table-wrapper">
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Student</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Submitted</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for complaint in complaints %}
+        <tr>
+            <td>#{{ complaint.id }}</td>
+            <td>{{ complaint.student_name }}</td>
+            <td>{{ complaint.category }}</td>
+            <td>{{ complaint.description[:50] }}{% if complaint.description|length > 50 %}...{% endif %}</td>
+            <td><span class="badge priority-{{ complaint.priority|lower }}">{{ complaint.priority }}</span></td>
+            <td><span class="badge status-{{ complaint.status|lower|replace(' ', '-') }}">{{ complaint.status }}</span></td>
+            <td>{{ complaint.created_at.strftime('%d-%m-%Y %I:%M %p') }}</td>
+            <td><a class="link-btn" href="{{ url_for('admin_complaint_details', complaint_id=complaint.id) }}">Manage</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+{% else %}
+<div class="empty card"><h3>No complaints found</h3><p>Try changing the filters.</p></div>
+{% endif %}
+{% endblock %}

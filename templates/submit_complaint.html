@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Submit Complaint{% endblock %}
+{% block content %}
+<div class="form-card">
+    <h2>Submit a Complaint</h2>
+    <p class="muted">Describe the campus problem clearly so the administration can take action.</p>
+    <form method="POST">
+        <label>Complaint Category</label>
+        <select name="category" required>
+            <option value="">Select a category</option>
+            {% for category in categories %}
+            <option value="{{ category }}">{{ category }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Description</label>
+        <textarea name="description" rows="7" maxlength="1000"
+                  placeholder="Describe the problem, location and any useful details..." required></textarea>
+        <small>Maximum 1000 characters.</small>
+
+        <div class="actions">
+            <button class="btn primary" type="submit">Submit Complaint</button>
+            <a class="btn secondary" href="{{ url_for('student_dashboard') }}">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

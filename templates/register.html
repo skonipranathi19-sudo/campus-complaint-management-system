@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Register - Campus Complaint & Maintenance Management System{% endblock %}
+{% block content %}
+<div class="form-card small">
+    <h2>Student Registration</h2>
+    <form method="POST" onsubmit="return validateRegistration()">
+        <label>Name</label>
+        <input type="text" name="name" id="name" placeholder="Enter your name" required>
+
+        <label>Email</label>
+        <input type="email" name="email" placeholder="Enter your email" required>
+
+        <label>Password</label>
+        <input type="password" name="password" id="password" placeholder="Minimum 6 characters" required>
+
+        <label>Confirm Password</label>
+        <input type="password" name="confirm_password" id="confirm_password" placeholder="Re-enter password" required>
+
+        <button class="btn primary full" type="submit">Register</button>
+    </form>
+</div>
+{% endblock %}
